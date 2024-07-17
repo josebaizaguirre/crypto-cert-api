@@ -21,9 +21,15 @@ Esta aplicación permite realizar operaciones criptográficas básicas como gene
     ```sh
     pip install -r requirements.txt
 
+3. Inicia el servidor FastAPI:
+    ```sh
+    uvicorn main:app --reload
+    
+
 ## Uso
 
 ### Paso 1: Generar la CA (Autoridad Certificadora)
+
 
 Para generar la CA, ejecuta el siguiente comando curl:
 
