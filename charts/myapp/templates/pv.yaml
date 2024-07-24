@@ -1,0 +1,20 @@
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  # Nombre del PersistentVolume
+  name: myapp-pv
+spec:
+  # Capacidad del volumen
+  capacity:
+    # Cantidad de almacenamiento proporcionada por el volumen
+    storage: 1Gi
+  # Modos de acceso al volumen
+  accessModes:
+    # Permite que el volumen sea montado como lectura/escritura por un solo nodo
+    - ReadWriteOnce
+  # Política de recuperación del volumen una vez que es liberado
+  persistentVolumeReclaimPolicy: Retain
+  # Configuración del almacenamiento local
+  hostPath:
+    # Ruta en el host donde se encuentra el almacenamiento
+    path: /mnt/data

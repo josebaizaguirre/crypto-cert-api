@@ -1,0 +1,16 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  # Nombre del PersistentVolumeClaim
+  name: myapp-pvc
+  # Namespace en el que se crea el PersistentVolumeClaim
+  namespace: default
+spec:
+  # Modos de acceso al volumen
+  accessModes:
+    - ReadWriteOnce
+  # Recursos solicitados, en este caso, almacenamiento
+  resources:
+    requests:
+      # Cantidad de almacenamiento solicitada
+      storage: 1Gi

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  # Nombre del Deployment
+  name: myapp
+  # Etiquetas asociadas al Deployment
+  labels:
+    app: myapp
+spec:
+  # Número de réplicas (pods) del Deployment
+  replicas: 3
+  # Selector utilizado para identificar los pods gestionados por este Deployment
+  selector:
+    matchLabels:
+      app: myapp
+  template:
+    metadata:
+      # Etiquetas asociadas a los pods creados por este Deployment
+      labels:
+        app: myapp
+    spec:
+      # Especificaciones de los contenedores en los pods
+      containers:
+      - name: myapp-container
+        # Imagen del contenedor
+        image: josebaizaguirre/mycustompki:v1
+        # Puertos expuestos por el contenedor
+        ports:
+        - containerPort: 8000
+        # Volúmenes montados en el contenedor
+        volumeMounts:
+        - mountPath: "/data"
+          name: myapp-storage
+      # Definición de los volúmenes utilizados por los pods
+      volumes:
+      - name: myapp-storage
+        persistentVolumeClaim:
+          # Nombre del PersistentVolumeClaim que proporciona el almacenamiento
+          claimName: myapp-pvc

@@ -1,0 +1,38 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  # Nombre del Ingress
+  name: myapp-ingress
+  # Namespace en el que se crea el Ingress
+  namespace: default
+  # Anotaciones para configurar el comportamiento del Ingress
+  annotations:
+    # Utiliza Cert Manager para obtener y gestionar certificados SSL
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    # Redirige todo el tráfico HTTP a HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # Fuerza la redirección a HTTPS
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  # Configuración de TLS (SSL)
+  tls:
+    - hosts:
+        # Dominio para el cual se emitirá el certificado SSL
+        - josebaizaguirre.com
+      # Nombre del secreto donde se almacenará el certificado TLS
+      secretName: myapp-tls
+  # Reglas para enrutar el tráfico
+  rules:
+    - host: josebaizaguirre.com
+      http:
+        paths:
+          - path: /
+            # Tipo de ruta (Prefix o Exact)
+            pathType: Prefix
+            backend:
+              service:
+                # Nombre del servicio al cual se redirigirá el tráfico
+                name: myapp-service
+                port:
+                  # Número de puerto del servicio
+                  number: 8000

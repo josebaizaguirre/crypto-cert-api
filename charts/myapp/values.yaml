@@ -1,0 +1,56 @@
+# Número de réplicas del Deployment
+replicaCount: 3
+
+# Configuración de la imagen del contenedor
+image:
+  # Nombre del repositorio de la imagen
+  repository: josebaizaguirre/mycustompki
+  # Tag (etiqueta) de la imagen
+  tag: v1
+  # Política de pull de la imagen
+  pullPolicy: IfNotPresent
+
+# Configuración del servicio de Kubernetes
+service:
+  # Tipo de servicio (ClusterIP, NodePort, LoadBalancer)
+  type: ClusterIP
+  # Puerto en el que el servicio estará disponible
+  port: 8000
+
+# Configuración del Ingress
+ingress:
+  # Habilitar o deshabilitar el Ingress
+  enabled: true
+  # Anotaciones para el Ingress
+  annotations:
+    # Usar Cert Manager para obtener certificados SSL
+    cert-manager.io/cluster-issuer: "letsencrypt"
+    # Redirigir todo el tráfico HTTP a HTTPS
+    nginx.ingress.kubernetes.io/ssl-redirect: "true"
+    # Forzar la redirección a HTTPS
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+  # Configuración de los hosts para el Ingress
+  hosts:
+    - host: josebaizaguirre.com
+      paths:
+        - path: /
+          pathType: Prefix
+  # Configuración de TLS (SSL)
+  tls:
+    - hosts:
+        - josebaizaguirre.com
+      # Nombre del secreto donde se almacenará el certificado TLS
+      secretName: myapp-tls
+
+# Configuración de los recursos (CPU y memoria)
+resources: {}
+
+# Configuración de la persistencia de datos
+persistence:
+  # Habilitar o deshabilitar el uso de un Persistent Volume
+  enabled: true
+  # Modos de acceso al volumen
+  accessModes:
+    - ReadWriteOnce
+  # Tamaño del volumen
+  size: 1Gi

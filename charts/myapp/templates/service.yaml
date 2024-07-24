@@ -1,0 +1,22 @@
+apiVersion: v1
+kind: Service
+metadata:
+  # Nombre del servicio, generado usando una plantilla de Helm
+  name: {{ include "myapp.fullname" . }}
+  labels:
+    # Etiquetas del servicio, generadas usando una plantilla de Helm
+    {{- include "myapp.labels" . | nindent 4 }}
+spec:
+  # Tipo de servicio (ClusterIP, NodePort, LoadBalancer), definido en values.yaml
+  type: {{ .Values.service.type }}
+  ports:
+    - port: {{ .Values.service.port }}
+      # Puerto interno al que se dirige el tráfico
+      targetPort: 8000
+      # Protocolo utilizado por el servicio
+      protocol: TCP
+      # Nombre del puerto para referencia interna
+      name: http
+  selector:
+    # Selector de etiquetas para los pods que serán gestionados por este servicio, generadas usando una plantilla de Helm
+    {{- include "myapp.selectorLabels" . | nindent 4 }}
